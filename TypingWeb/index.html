@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Test</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
+    
+</head>
+
+<body>
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Welcome To Typing Speed Test</h1>
+            <h2 id="msg"></h2>
+            <br />
+            <textarea id="mywords" cols="100" rows="10" placeholder="Remember, be nice!"></textarea>
+            <br />
+            <button id="btn" class="mainbtn">Start</button>
+        </div>
+    </div>
+
+    <script>
+        const setOfwords = ["Proin ac enim sed diam imperdiet varius.",
+            "Nunc placerat orci a felis accumsan commodo.",
+            "Sed quis leo eget ex faucibus porta et sit amet tellus.",
+            "Morbi vitae leo accumsan eros convallis rhoncus tincidunt non enim.",
+            "Mauris rhoncus libero non molestie scelerisque.",
+            "Proin auctor lorem at odio fringilla tempus.",
+            "Vestibulum tincidunt purus sed elit laoreet finibus.",
+            "Phasellus eu turpis aliquet, vehicula ex in, tempor purus."
+        ];
+        const msg = document.getElementById("msg");
+        const typewords = document.getElementById("mywords");
+        const btn = document.getElementById("btn");
+        let startTime, endTime;
+
+        const playGame = () => {
+            let randomNumber = Math.floor(Math.random() * setOfwords.length);
+            msg.innerText = setOfwords[randomNumber];
+            let date = new Date();
+            startTime = date.getTime();
+            btn.innerText = "Done";
+        }
+
+
+        const endPlay = () => {
+            let date = new Date();
+            endTime = date.getTime();
+            let totalTime = ((endTime - startTime) / 1000);
+
+            let totalstr = typewords.value;
+            let wordCount = wordCounter(totalstr);
+
+            let speed = Math.round((wordCount / totalTime) * 60)
+
+            let finalMsg = "You typed total at " + speed + " words per minutes ";
+            finalMsg += compareWords(msg.innerText, totalstr);
+            msg.innerText = finalMsg;
+        }
+
+        const wordCounter = (str) => {
+            let response = str.split(" "); //create new array
+            return response.length;
+        }
+
+        const compareWords = (str1, str2) => {
+            let words1 = str1.split(" ");
+            let words2 = str2.split(" ");
+            let cnt = 0;
+            words1.forEach(function (item, index) {
+                if (item == words2[index]) {
+                    cnt++;
+                }
+            })
+            let errorwords = words1.length - cnt;
+            return (cnt + " correct out of " + words1.length + " words and the total number of error are " +
+                errorwords + ".")
+        }
+
+        btn.addEventListener('click', function () {
+            if (this.innerText == 'Start') {
+                typewords.disabled = false;
+                playGame();
+            } else if (this.innerText == "Done") {
+                typewords.disabled = true;
+                btn.innerText = "Start";
+                endPlay();
+            }
+        })
+    </script>
+   
+</body>
+
+</html>
